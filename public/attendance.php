@@ -1,12 +1,13 @@
 <?php
     include "../config/session.php";
-    if ($_SESSION['role'] != 'admin') header("location:login.php");
+    if ($_SESSION['role'] != 'admin') {
+        header("location:login.php");
+    }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Attendance</title>
-    <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token']; ?>">
     <link rel="stylesheet" type="text/css" href="../assets/css/home.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/header.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/attendance.css">
@@ -19,10 +20,14 @@
             <article class="attendance-table">
                 <div class="date-search">
                     <label>Date: </label>
-                    <input type="date" id="attendance-date" class="date-input" value="<?php echo date('Y-m-d')?>" onchange="searchDate()">
+                    <input type="date" id="attendance-date" class="date-input" value="<?php echo date('Y-m-d')?>">
+                    <button class="search-btn" onclick="searchDate()">View</button>
                 </div>
                 <table class="table" id="attendance_table">
-                    </table>
+                    <tr>
+                        <th>ID</th><th>Name</th><th>Program</th><th>Status</th>
+                    </tr>
+                </table>
             </article>
         </main>
     </section>

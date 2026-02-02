@@ -1,92 +1,119 @@
 .leave-table {
     background: #fff;
     border: 1px solid #e8e8e8;
-    padding: 24px;
+    padding: 28px;
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.table {
+#course_table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 8px;
 }
 
-.table th {
+#course_table th {
     text-align: left;
-    padding: 16px;
+    padding: 14px 12px;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    color: #6b7280;
-    border-bottom: 2px solid #e5e7eb;
+    letter-spacing: 0.5px;
+    color: #666;
+    border-bottom: 2px solid #e8e8e8;
 }
 
-.table td {
-    padding: 16px;
+#course_table th:first-child {
+    border-radius: 8px 0 0 0;
+}
+
+#course_table th:last-child {
+    border-radius: 0 8px 0 0;
+}
+
+#course_table td {
+    padding: 18px 12px;
     font-size: 14px;
-    color: #1f2937;
-    border-bottom: 1px solid #f3f4f6;
-    vertical-align: middle;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-/* Status Badges */
+#course_table tr:hover td {
+    background: #fafafa;
+}
+
+#course_table tr:last-child td:first-child {
+    border-radius: 0 0 0 8px;
+}
+
+#course_table tr:last-child td:last-child {
+    border-radius: 0 0 8px 0;
+}
+
 .status-text {
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 9999px;
-    display: inline-block;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 20px;
 }
 
-/* Status Colors (Must match lowercase ID in JS) */
 #pending {
-    background: #fff7ed;
-    color: #c2410c;
-    border: 1px solid #ffedd5;
+    background: #fef3c7;
+    color: #92400e;
 }
 
 #verified {
-    background: #ecfdf5;
-    color: #047857;
-    border: 1px solid #d1fae5;
+    background: #d1fae5;
+    color: #065f46;
 }
 
 #rejected {
-    background: #fef2f2;
-    color: #b91c1c;
-    border: 1px solid #fee2e2;
+    background: #fee2e2;
+    color: #991b1b;
 }
 
-/* Action Buttons */
 .approve-button,
 .reject-button {
     padding: 8px 16px;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    border: none;
-    border-radius: 6px;
     transition: all 0.2s;
-    margin-right: 6px;
+    border: none;
+    margin-right: 8px;
+    border-radius: 8px;
 }
 
 .approve-button {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.approve-button:hover {
     background: #059669;
     color: #fff;
 }
 
-.approve-button:hover {
-    background: #047857;
+.reject-button {
+    background: #fee2e2;
+    color: #991b1b;
 }
 
-.reject-button {
+.reject-button:hover {
     background: #dc2626;
     color: #fff;
 }
 
-.reject-button:hover {
-    background: #b91c1c;
+@media (max-width: 768px) {
+    .leave-table {
+        padding: 16px;
+        overflow-x: auto;
+    }
+    #course_table {
+        min-width: 700px;
+    }
 }

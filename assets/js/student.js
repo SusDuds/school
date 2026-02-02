@@ -1,150 +1,127 @@
 const API_URL = "../config/server.php";
-let searchTimer;
-let isEditMode = false;
+const table = document.getElementById("student_table");
+const modal = document.getElementById("editModal");
 
-// Safe Token Retrieval
-const csrfMeta = document.querySelector('meta[name="csrf-token"]');
-const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+let allStudents = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-    if(!csrfToken) console.warn("CSRF Token missing");
-    loadStudents();
-});
+document.addEventListener("DOMContentLoaded", loadStudents);
 
-// Force global scope
-window.debouncedSearch = function() {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => loadStudents(), 300);
-}
-
-window.loadStudents = async function() {
-    const name = document.getElementById("searchName").value || '';
-    const prog = document.getElementById("searchProgram").value || '';
-    
+async function loadStudents() {
     try {
-        const response = await fetch(`${API_URL}?search=${encodeURIComponent(name)}&program=${encodeURIComponent(prog)}`);
+        const response = await fetch(API_URL);
         const data = await response.json();
+        allStudents = data;
         renderTable(data);
     } catch (error) {
-        console.error("Load Error:", error);
+        console.error(error);
     }
 }
 
 function renderTable(data) {
-    const tbody = document.querySelector("#student_table tbody");
-    tbody.innerHTML = "";
-
-    // Handle case where API returns error object instead of array
-    if (data.error || !Array.isArray(data)) {
-        console.error(data);
-        return;
-    }
-
-    if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;">No students found</td></tr>`;
-        return;
-    }
-
-    data.forEach(std => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${escapeHtml(std.ID)}</td>
-            <td>${escapeHtml(std.name)}</td>
-            <td>${escapeHtml(std.email)}</td>
-            <td>${escapeHtml(std.dept)}</td>
-            <td>
-                <button class="edit-btn" onclick='openEditModal(${JSON.stringify(std)})'>Edit</button>
-                <button class="delete-btn" onclick="deleteStudent(${std.ID})">Remove</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// Modal Functions
-window.openAddModal = function() {
-    isEditMode = false;
-    document.getElementById("modalTitle").textContent = "Add New Student";
-    document.getElementById("editForm").reset();
-    document.getElementById("password-group").style.display = "block";
-    document.getElementById("editModal").style.display = "block";
-}
-
-window.openEditModal = function(std) {
-    isEditMode = true;
-    document.getElementById("modalTitle").textContent = "Edit Student";
-    document.getElementById("edit-id").value = std.ID;
-    document.getElementById("edit-name").value = std.name;
-    document.getElementById("edit-email").value = std.email;
-    document.getElementById("edit-program").value = std.dept;
-    document.getElementById("password-group").style.display = "none";
-    document.getElementById("editModal").style.display = "block";
-}
-
-window.closeModal = function() {
-    document.getElementById("editModal").style.display = "none";
-}
-
-// Save Function
-window.saveStudent = async function() {
-    const id = document.getElementById("edit-id").value;
-    const name = document.getElementById("edit-name").value;
-    const email = document.getElementById("edit-email").value;
-    const program = document.getElementById("edit-program").value;
-    const password = document.getElementById("edit-password").value;
-
-    const method = isEditMode ? "PUT" : "POST";
-    const url = isEditMode ? `${API_URL}?studentId=${id}` : API_URL;
+    let html = `<tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Program</th>
+        <th>Action</th>
+    </tr>`;
     
-    const payload = { name, email, program };
-    if (!isEditMode) payload.password = password;
+    if (data.length === 0) {
+        html += `<tr><td colspan="5" style="text-align:center;padding:40px;">No students found</td></tr>`;
+    } else {
+        data.forEach(std => {
+            html += `<tr>
+                <td>${std.ID}</td>
+                <td>${std.name}</td>
+                <td>${std.email}</td>
+                <td>${std.dept}</td>
+                <td>
+                    <button class="edit-btn" onclick='openEditModal(${std.ID}, "${std.name}", "${std.email}", "${std.dept}")'>Edit</button>
+                    <button class="delete-btn" onclick="deleteStudent(${std.ID})">Remove</button>
+                </td>
+            </tr>`;
+        });
+    }
+    table.innerHTML = html;
+}
 
+function filterStudents() {
+    const nameSearch = document.getElementById("searchName").value.toLowerCase();
+    const programFilter = document.getElementById("searchProgram").value;
+    
+    let filtered = allStudents;
+    
+    if (nameSearch) {
+        filtered = filtered.filter(s => s.name.toLowerCase().includes(nameSearch));
+    }
+    
+    if (programFilter) {
+        filtered = filtered.filter(s => s.dept.includes(programFilter));
+    }
+    
+    renderTable(filtered);
+}
+
+function clearFilter() {
+    document.getElementById("searchName").value = "";
+    document.getElementById("searchProgram").value = "";
+    renderTable(allStudents);
+}
+
+function openEditModal(id, name, email, program) {
+    document.getElementById("edit-id").value = id;
+    document.getElementById("edit-name").value = name;
+    document.getElementById("edit-email").value = email;
+    document.getElementById("edit-program").value = program;
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
+async function saveStudent() {
+    const id = document.getElementById("edit-id").value;
+    const data = {
+        name: document.getElementById("edit-name").value,
+        email: document.getElementById("edit-email").value,
+        program: document.getElementById("edit-program").value
+    };
+    
     try {
-        const response = await fetch(url, {
-            method: method,
-            headers: { 
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': csrfToken 
-            },
-            body: JSON.stringify(payload)
+        const response = await fetch(`${API_URL}?studentId=${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
         
-        // This line used to crash if response was HTML. Now server guarantees JSON.
-        const res = await response.json();
-        
-        if (res.success) {
-            closeModal();
-            loadStudents();
-        } else {
-            alert(res.message || "Operation failed");
-        }
+        const students = await response.json();
+        allStudents = students;
+        renderTable(students);
+        closeModal();
     } catch (error) {
-        console.error(error);
-        alert("System Error: Check console");
+        alert("Error saving changes");
     }
 }
 
-window.deleteStudent = async function(id) {
-    if (!confirm("Are you sure?")) return;
+async function deleteStudent(id) {
+    if (!confirm("Are you sure you want to remove this student?")) return;
     
     try {
         const response = await fetch(`${API_URL}?id=${id}`, {
-            method: 'DELETE',
-            headers: { 'X-CSRF-Token': csrfToken }
+            method: 'DELETE'
         });
         
-        const res = await response.json();
-        if(res.success) {
-            loadStudents();
-        } else {
-            alert(res.message);
-        }
+        const students = await response.json();
+        allStudents = students;
+        renderTable(students);
     } catch (error) {
-        alert("Delete failed");
+        alert("Error deleting student");
     }
-}
-
-function escapeHtml(text) {
-    if (!text) return "";
-    return text.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
