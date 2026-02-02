@@ -1,0 +1,60 @@
+.employee-table {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 30px;
+    margin-top: 30px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th {
+    text-align: left;
+    padding: 20px;
+    background: var(--bg-body);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+th:first-child { border-radius: 10px 0 0 10px; }
+th:last-child { border-radius: 0 10px 10px 0; }
+
+td {
+    padding: 20px;
+    color: var(--text-main);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    vertical-align: middle;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+#delete-btn {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#delete-btn:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.05);
+}

@@ -1,0 +1,85 @@
+.header-section {
+    width: 260px;
+    height: 100vh;
+    background-color: var(--primary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+}
+
+.user-info {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.user-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid var(--accent);
+    padding: 3px;
+    background: white; /* Fallback if no image */
+}
+
+.user-name {
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+}
+
+.navigation {
+    flex-grow: 1;
+    padding-top: 20px;
+}
+
+.navigation a {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.navigation a:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: var(--white);
+    border-left-color: var(--accent);
+    padding-left: 35px; /* Slide effect */
+}
+
+.nav-images {
+    width: 20px;
+    height: 20px;
+    margin-right: 15px;
+    filter: brightness(0) invert(1); /* Make icons white */
+}
+
+.logout {
+    padding: 20px;
+    text-align: center;
+    background-color: #d32f2f;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.logout:hover {
+    background-color: #b71c1c;
+}

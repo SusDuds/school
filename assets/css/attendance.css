@@ -1,0 +1,53 @@
+.attendance-table {
+    background: var(--surface);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    margin-top: 30px;
+}
+
+.date-search {
+    background: var(--bg-body);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.date-search label {
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.date-input {
+    flex-grow: 1;
+    padding: 12px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: inherit;
+    color: var(--text-main);
+}
+
+.search-btn {
+    padding: 12px 30px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.search-btn:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+}
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 20px; color: var(--text-muted); font-size: 0.85rem; border-bottom: 2px solid var(--bg-body); }
+td { padding: 20px; border-bottom: 1px solid var(--bg-body); color: var(--text-main); font-weight: 500; }

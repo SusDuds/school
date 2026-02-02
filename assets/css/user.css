@@ -1,0 +1,61 @@
+/* Stats Cards */
+.attendance, .req-leave {
+    background: var(--surface);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* Color Bars */
+.attendance::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--primary);
+}
+
+.req-leave::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--accent);
+}
+
+.leave-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.attendance-btn {
+    padding: 15px 40px;
+    background: var(--text-main);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: var(--transition);
+}
+
+.attendance-btn:hover {
+    transform: translateY(-3px);
+    background: var(--primary);
+    box-shadow: 0 15px 30px rgba(15, 118, 110, 0.2);
+}

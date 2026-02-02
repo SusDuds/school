@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    /* BG Image configuration */
+    background: linear-gradient(rgba(0, 33, 71, 0.8), rgba(0, 33, 71, 0.8)), url('../../images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page {
+    display: flex;
+    /* KEY CHANGE: Swaps the visual order (Form Right, Info Left) */
+    flex-direction: row-reverse; 
+    width: 1000px;
+    height: 600px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* The Image/Info Side (Now visually on Left) */
+.side-section {
+    width: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+}
+
+.side-image {
+    text-align: center;
+    z-index: 2;
+}
+
+.side-dash {
+    width: 80%;
+    max-width: 300px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* The Form Side (Now visually on Right) */
+.login-section {
+    width: 50%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--white);
+}
+
+.login-header {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.login-place h3 {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 25px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.login-form input {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border 0.3s;
+    background-color: #fafafa;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background-color: #fff;
+}
+
+.login-submit {
+    background-color: var(--accent);
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.login-submit:hover {
+    background-color: #e65100;
+}
+
+.new-login {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.new-login a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    .login-page {
+        flex-direction: column-reverse; /* Form on top, Image on bottom for mobile */
+        width: 90%;
+        height: auto;
+    }
+    .side-section, .login-section {
+        width: 100%;
+        padding: 30px;
+    }
+    .side-dash { display: none; }
+}
