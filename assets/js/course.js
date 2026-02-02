@@ -1,9 +1,8 @@
 const API_URL = "../config/courseServer.php";
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content') || '';
 const table = document.getElementById("course_table");
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadRecords();
-});
+document.addEventListener("DOMContentLoaded", loadRecords);
 
 async function loadRecords() {
     try {
@@ -11,22 +10,15 @@ async function loadRecords() {
         if (response.ok) {
             const data = await response.json();
             let html = `<tr>
-                            <th>Student</th>
-                            <th>Course Name</th>
-                            <th>Completion Date</th>
-                            <th>Grade</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Student</th><th>Course</th><th>Date</th><th>Grade</th><th>Status</th><th>Action</th>
                         </tr>`;
 
             data.forEach(row => {
                 let actionBtn = "";
-                // Logic to show buttons only if pending
                 if (row.status === "Pending") {
-                    actionBtn = `<button class="approve-button" onclick="updateStatus('${row.Id}', 'Verified')">Verify</button>
-                                 <button class="reject-button" onclick="updateStatus('${row.Id}', 'Rejected')">Reject</button>`;
+                    actionBtn = `<button class="approve-button" onclick="updateStatus(${row.Id}, 'Verified')">Verify</button>
+                                 <button class="reject-button" onclick="updateStatus(${row.Id}, 'Rejected')">Reject</button>`;
                 } else {
-                    // Uses IDs like #verified, #rejected for CSS styling
                     actionBtn = `<span class="status-text" id="${row.status.toLowerCase()}">${row.status}</span>`;
                 }
 
@@ -48,9 +40,15 @@ async function loadRecords() {
 
 async function updateStatus(id, status) {
     try {
-        const response = await fetch(`${API_URL}?recordId=${id}&status=${status}`, {
-            method: 'PUT'
+        const response = await fetch(API_URL, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken 
+            },
+            body: JSON.stringify({ recordId: id, status: status })
         });
+        
         if (response.ok) {
             await loadRecords();
         }

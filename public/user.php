@@ -3,23 +3,20 @@
     include "../config/session.php";
     include "../includes/functions.php";
 
-    $id = $_SESSION['studentId'];
-    if ($_SESSION['role'] != 'student') {
+    if (!isset($_SESSION['logged_in']) || $_SESSION['role'] != 'student') {
         header("location:login.php");
+        exit;
     }
+    
+    // Initial status check (kept PHP for first load speed, button handles logic)
+    $id = $_SESSION['studentId'];
     $status = todaysAttendance($id);
-
-    if (isset($_POST['attendance-btn'])) {
-        try {
-            $pdo->query("Insert into attendance(studentId) values ($id);");
-            header("Refresh:0");
-        } catch (PDOException $e) { }
-    }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>My Dashboard</title>
+    <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token']; ?>">
     <link rel="stylesheet" type="text/css" href="../assets/css/home.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/header.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/user.css">
@@ -31,9 +28,10 @@
             <p class="home-welcome">Namaste, <?php echo htmlspecialchars($_SESSION['name']) ?> </p>
             <article>
                 <div class="attendance">
-                    <p class="leave-text">Today's Attendance: <?php echo $status; ?></p>
+                    <p class="leave-text" id="attendance-status">Today's Attendance: <?php echo htmlspecialchars($status); ?></p>
+                    
                     <?php if ($status == 'Not punched in'): ?>
-                        <form method="POST"><button class="attendance-btn" name="attendance-btn" type="Submit">Check In</button></form>
+                        <button class="attendance-btn" id="checkin-btn" onclick="markAttendance()">Check In</button>
                     <?php endif; ?>
                 </div>
                 <div class="req-leave">
@@ -43,5 +41,6 @@
             </article>
         </main>
     </section>
+    <script src="../assets/js/user.js"></script>
 </body>
 </html>

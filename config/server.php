@@ -1,77 +1,112 @@
 <?php
-    include "db.php";
+    // 1. SILENCE HTML ERRORS
+    error_reporting(0);
+    ini_set('display_errors', 0);
 
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: *");
-    
-    if($_SERVER['REQUEST_METHOD']==="GET"){
-        echo infoStudent();
+    // 2. ALWAYS SEND JSON HEADER
+    header("Content-Type: application/json; charset=UTF-8");
+
+    require_once "session.php";
+    require_once "db.php";
+
+    // Helper to send JSON and stop
+    function sendResponse($success, $message = '', $data = []) {
+        echo json_encode(['success' => $success, 'message' => $message, 'data' => $data]);
+        exit;
     }
 
-    if($_SERVER['REQUEST_METHOD']==="PUT"){
-        editStudent();
+    // CSRF Check
+    function checkCSRF() {
+        $headers = getallheaders();
+        // Check for header OR standard POST field
+        $token = $headers['X-CSRF-Token'] ?? ($_POST['csrf_token'] ?? '');
+        
+        if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
+            // Return JSON error instead of standard 403 HTML page
+            http_response_code(200); // Send 200 OK but with success: false to handle in JS gracefully
+            sendResponse(false, 'Security Token Mismatch. Please refresh the page.');
+        }
     }
 
-    if($_SERVER['REQUEST_METHOD']==="DELETE"){
-        deleteStudent();
-    }
+    $method = $_SERVER['REQUEST_METHOD'];
 
-    function infoStudent(){
-        try{
-            global $pdo;
-            $stmt = $pdo->query("Select * from students where role='student'");
-            $rows=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        // --- SEARCH (GET) ---
+        if ($method === "GET") {
+            $search = $_GET['search'] ?? '';
+            $program = $_GET['program'] ?? '';
             
-            $allStudents = [];
-            if(count($rows)>0){
-                foreach ($rows as $std) {
-                    $allStudents[] = ['ID'=>$std['studentId'],
-                                    'name'=>$std['fullname'],
-                                    'email'=>$std['email'],
-                                    'dept'=>$std['program'], 
-                                    'role'=>$std['role'],
-                                    'joined_at'=>$std['joined_at'],
-                                    ];
-                }
-                return json_encode($allStudents);
-            }
-            return json_encode([]); 
-        }catch (PDOException $e){
-            echo $e->getMessage();
-        }
-    }
+            $sql = "SELECT studentId AS ID, fullname AS name, email, program AS dept, role FROM students WHERE role='student'";
+            $params = [];
 
-    function editStudent(){
-        if(isset($_REQUEST['studentId'])){
-            $id = $_REQUEST['studentId'];
-            $rawData = file_get_contents("php://input");
-            $data = json_decode($rawData,true);
-            $name=$data['name'];
-            $email=$data['email'];
-            $program=$data['program'];
-            $role=$data['role'];
-            try{
-                global $pdo;
-                $stmt=$pdo->prepare("Update students set fullname=?,email=?,program=?,role=? where studentId=?");
-                $stmt->execute([$name,$email,$program,$role,$id]);
-                echo infoStudent();
-            }catch(PDOException $e){
-                echo $e->getMessage();
+            if (!empty($search)) {
+                $sql .= " AND fullname LIKE ?";
+                $params[] = "%$search%";
             }
+            if (!empty($program)) {
+                $sql .= " AND program LIKE ?";
+                $params[] = "%$program%";
+            }
+            
+            $sql .= " ORDER BY studentId DESC";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+            
+            echo json_encode($stmt->fetchAll());
+            exit;
         }
-    }
 
-    function deleteStudent(){
-        global $pdo;
-        if(isset($_REQUEST['id'])){
-            $id = $_REQUEST['id'];
-            try{
-                $stmt = $pdo->prepare("Delete from students where studentId=?");
-                $stmt->execute([$id]);
-                echo infoStudent();
-            }catch(PDOException $e){
-                echo $e->getMessage();
+        // --- ADD STUDENT (POST) ---
+        elseif ($method === "POST") {
+            checkCSRF();
+            $data = json_decode(file_get_contents("php://input"), true);
+            
+            if (empty($data['name']) || empty($data['email'])) {
+                sendResponse(false, "Name and Email are required");
             }
+
+            // Check duplicate email
+            $check = $pdo->prepare("SELECT studentId FROM students WHERE email = ?");
+            $check->execute([$data['email']]);
+            if($check->rowCount() > 0) {
+                sendResponse(false, "Email already exists");
+            }
+
+            $pass = password_hash($data['password'], PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare("INSERT INTO students (fullname, email, program, password, role) VALUES (?, ?, ?, ?, 'student')");
+            $stmt->execute([$data['name'], $data['email'], $data['program'], $pass]);
+            
+            sendResponse(true, "Student added successfully");
         }
+
+        // --- EDIT STUDENT (PUT) ---
+        elseif ($method === "PUT") {
+            checkCSRF();
+            $id = $_GET['studentId'] ?? 0;
+            $data = json_decode(file_get_contents("php://input"), true);
+            
+            if(!$id) sendResponse(false, "Invalid ID");
+
+            $stmt = $pdo->prepare("UPDATE students SET fullname=?, email=?, program=? WHERE studentId=?");
+            $stmt->execute([$data['name'], $data['email'], $data['program'], $id]);
+            
+            sendResponse(true, "Student updated");
+        }
+
+        // --- DELETE STUDENT (DELETE) ---
+        elseif ($method === "DELETE") {
+            checkCSRF();
+            $id = $_GET['id'] ?? 0;
+            
+            if(!$id) sendResponse(false, "Invalid ID");
+
+            $stmt = $pdo->prepare("DELETE FROM students WHERE studentId=?");
+            $stmt->execute([$id]);
+            
+            sendResponse(true, "Student removed");
+        }
+
+    } catch (Exception $e) {
+        sendResponse(false, "Server Error: " . $e->getMessage());
     }
 ?>
