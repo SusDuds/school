@@ -1,58 +1,93 @@
 .leave-form {
-    background: var(--surface);
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 50px;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-    border-top: 8px solid var(--accent);
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    padding: 32px;
+    border-radius: 16px;
+    max-width: 480px;
 }
 
 .leave-form label {
     display: block;
-    margin-top: 25px;
-    font-weight: 700;
-    color: var(--text-main);
-    font-size: 0.95rem;
-    margin-bottom: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
 }
 
 .leave-form input {
     width: 100%;
-    padding: 16px;
-    background: var(--bg-body);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: var(--transition);
-    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    background: #fafafa;
+    font-family: inherit;
 }
 
 .leave-form input:focus {
-    background: white;
-    border-color: var(--accent);
     outline: none;
-    box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.1);
+    border-color: #2563eb;
+    background: #fff;
 }
 
 .leave-submit {
-    width: 100%;
-    margin-top: 40px;
-    padding: 18px;
-    background: var(--accent);
-    color: white;
+    background: #1a1a1a;
+    color: #fff;
     border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 800;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: var(--transition);
+    transition: background 0.2s;
+    width: 100%;
 }
 
 .leave-submit:hover {
-    background: #c2410c;
-    box-shadow: 0 10px 20px rgba(234, 88, 12, 0.3);
-    transform: translateY(-2px);
+    background: #333;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 16px;
+    margin-top: 24px;
+    overflow: hidden;
+}
+
+.table th {
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+    border-bottom: 2px solid #e8e8e8;
+    background: #fafafa;
+}
+
+.table td {
+    padding: 18px 16px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .leave-form {
+        padding: 24px;
+    }
 }

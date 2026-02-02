@@ -1,60 +1,231 @@
-.employee-table {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 30px;
-    margin-top: 30px;
-    box-shadow: var(--shadow-card);
-    border: 1px solid rgba(0,0,0,0.04);
+.search-section {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 16px;
 }
 
-table {
+.search-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.search-box label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-box input,
+.search-box select {
+    padding: 14px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #fafafa;
+}
+
+.search-box input:focus,
+.search-box select:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #fff;
+}
+
+.search-btn, .clear-btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.search-btn {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.clear-btn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.employee-table {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    padding: 28px;
+    border-radius: 16px;
+}
+
+.table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
 }
 
-th {
+.table th {
     text-align: left;
-    padding: 20px;
-    background: var(--bg-body);
-    color: var(--text-muted);
-    font-size: 0.8rem;
+    padding: 14px 12px;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 700;
-    border-top: 1px solid rgba(0,0,0,0.05);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    letter-spacing: 0.5px;
+    color: #666;
+    border-bottom: 2px solid #e8e8e8;
 }
 
-th:first-child { border-radius: 10px 0 0 10px; }
-th:last-child { border-radius: 0 10px 10px 0; }
-
-td {
-    padding: 20px;
-    color: var(--text-main);
-    font-weight: 500;
-    border-bottom: 1px solid rgba(0,0,0,0.03);
-    vertical-align: middle;
+.table td {
+    padding: 18px 12px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-tr:hover td {
-    background: #f8fafc;
+.table tr:hover td {
+    background: #fafafa;
 }
 
-#delete-btn {
-    background: var(--danger-bg);
-    color: var(--danger-text);
+.edit-btn {
+    background: #e0f2fe;
+    color: #0369a1;
     border: none;
     padding: 8px 16px;
     border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
+    margin-right: 8px;
+    transition: all 0.2s;
 }
 
-#delete-btn:hover {
-    background: #ef4444;
-    color: white;
-    transform: scale(1.05);
+.edit-btn:hover {
+    background: #0369a1;
+    color: #fff;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+    color: #fff;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 32px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 480px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: #999;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modal-content h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#editForm label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#editForm input,
+#editForm select {
+    padding: 14px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #fafafa;
+}
+
+#editForm input:focus,
+#editForm select:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #fff;
+}
+
+.save-btn {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.save-btn:hover {
+    background: #333;
+}
+
+@media (max-width: 768px) {
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .employee-table {
+        padding: 16px;
+        overflow-x: auto;
+    }
+    .table {
+        min-width: 600px;
+    }
 }

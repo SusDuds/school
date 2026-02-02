@@ -1,14 +1,15 @@
 <?php 
+
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "namaste_db";
+    $username = "NP03CS4A240201";
+    $password = "ZtfP5QJlrL";
+    $database = "NP03CS4A240201";
 
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // 1. Students (was Employee)
+  
         $pdo->query("CREATE TABLE IF NOT EXISTS students (
                         studentId INT PRIMARY KEY AUTO_INCREMENT,
                         fullname VARCHAR(100) NOT NULL,
@@ -19,7 +20,7 @@
                         joined_at DATE DEFAULT CURRENT_DATE
                     );");
 
-        // 2. Courses (was Leaves)
+  
         $pdo->query("CREATE TABLE IF NOT EXISTS courses (
                         recordId INT PRIMARY KEY AUTO_INCREMENT,
                         studentId INT,
@@ -30,14 +31,14 @@
                         status VARCHAR(20) DEFAULT 'Pending'
                     );");
 
-        // 3. Attendance
+  
         $pdo->query("CREATE TABLE IF NOT EXISTS attendance (
                         studentId INT NOT NULL,
                         attendance_date DATE DEFAULT CURRENT_DATE,
                         PRIMARY KEY (studentId, attendance_date)
                     );");
 
-        // Default Admin
+ 
         $check = $pdo->query("SELECT * FROM students WHERE email='admin@namaste.edu'");
         if ($check->rowCount() == 0) {
             $pass = password_hash("admin123", PASSWORD_DEFAULT);

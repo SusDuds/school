@@ -1,61 +1,67 @@
-/* Stats Cards */
-.attendance, .req-leave {
-    background: var(--surface);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-card);
-    margin-bottom: 30px;
+.main-right article {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 28px;
+}
+
+.attendance,
+.req-leave {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    padding: 32px;
+    border-radius: 16px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.04);
-}
-
-/* Color Bars */
-.attendance::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 6px;
-    background: var(--primary);
-}
-
-.req-leave::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 6px;
-    background: var(--accent);
+    min-height: 200px;
 }
 
 .leave-text {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--text-main);
-    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
 }
 
 .attendance-btn {
-    padding: 15px 40px;
-    background: var(--text-main);
-    color: white;
+    background: #1a1a1a;
+    color: #fff;
     border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: var(--transition);
+    transition: background 0.2s;
+    align-self: flex-start;
 }
 
 .attendance-btn:hover {
-    transform: translateY(-3px);
-    background: var(--primary);
-    box-shadow: 0 15px 30px rgba(15, 118, 110, 0.2);
+    background: #333;
+}
+
+.req-leave p {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.req-leave a {
+    text-decoration: none;
+    align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+    .main-right article {
+        grid-template-columns: 1fr;
+    }
+    .attendance,
+    .req-leave {
+        padding: 24px;
+    }
 }

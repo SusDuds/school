@@ -1,71 +1,119 @@
 .leave-table {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 30px;
-    margin-top: 30px;
-    box-shadow: var(--shadow-card);
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    padding: 28px;
+    border-radius: 16px;
 }
 
-table { width: 100%; border-collapse: collapse; }
+#course_table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 8px;
+}
 
-th {
+#course_table th {
     text-align: left;
-    padding: 20px;
-    color: var(--text-muted);
-    font-size: 0.8rem;
+    padding: 14px 12px;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-bottom: 2px solid var(--bg-body);
+    letter-spacing: 0.5px;
+    color: #666;
+    border-bottom: 2px solid #e8e8e8;
 }
 
-td {
-    padding: 20px;
-    color: var(--text-main);
-    border-bottom: 1px solid var(--bg-body);
-    font-size: 0.95rem;
+#course_table th:first-child {
+    border-radius: 8px 0 0 0;
 }
 
-/* Action Buttons */
-button {
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: none;
-    font-weight: 700;
-    font-size: 0.8rem;
+#course_table th:last-child {
+    border-radius: 0 8px 0 0;
+}
+
+#course_table td {
+    padding: 18px 12px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#course_table tr:hover td {
+    background: #fafafa;
+}
+
+#course_table tr:last-child td:first-child {
+    border-radius: 0 0 0 8px;
+}
+
+#course_table tr:last-child td:last-child {
+    border-radius: 0 0 8px 0;
+}
+
+.status-text {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+#pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+#verified {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+#rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.approve-button,
+.reject-button {
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s;
+    border: none;
     margin-right: 8px;
+    border-radius: 8px;
 }
 
 .approve-button {
-    background: var(--success-bg);
-    color: var(--success-text);
+    background: #d1fae5;
+    color: #065f46;
 }
+
 .approve-button:hover {
-    background: #10b981;
-    color: white;
+    background: #059669;
+    color: #fff;
 }
 
 .reject-button {
-    background: var(--danger-bg);
-    color: var(--danger-text);
+    background: #fee2e2;
+    color: #991b1b;
 }
+
 .reject-button:hover {
-    background: #ef4444;
-    color: white;
+    background: #dc2626;
+    color: #fff;
 }
 
-/* Status Badges */
-.status-text {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+@media (max-width: 768px) {
+    .leave-table {
+        padding: 16px;
+        overflow-x: auto;
+    }
+    #course_table {
+        min-width: 700px;
+    }
 }
-
-#verified { background: var(--success-bg); color: var(--success-text); }
-#rejected { background: var(--danger-bg); color: var(--danger-text); }
-#pending { background: var(--warning-bg); color: var(--warning-text); }

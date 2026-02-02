@@ -45,7 +45,7 @@
                 <h3>Student Portal</h3>
                 <form class="login-form" method="POST">
                     <label>Email ID</label>
-                    <input type="Email" name="login_email" placeholder="student@namaste.edu">
+                    <input type="Email" name="login_email" placeholder="student@gmail.com">
                     <label>Password</label>
                     <input type="password" name="login_password" placeholder="••••••••">
                     <p class="message" style="color:red;"><?php echo $error ?></p>
@@ -56,7 +56,8 @@
         </main>
         <aside class="side-section">
             <div class="side-image">
-                <h2>Education for Everyone</h2>
+                <h2>NamasteVidyalaya</h2>
+				<p>Where Tradition Meets Excellence in Education</p>
             </div>
         </aside>
     </section>
