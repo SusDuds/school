@@ -1,13 +1,17 @@
 <?php
     include "../config/db.php";
+    include "../config/session.php";
     global $pdo;
     $error = "";
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (isset($_POST['signup_button'])) {
-            $name = trim($_POST['signup_name']);
-            $email = trim($_POST['signup_email']);
-            $prog = trim($_POST['signup_program']);
+        // CSRF Validation
+        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'] ?? '')) {
+            $error = "Security token invalid";
+        } else if (isset($_POST['signup_button'])) {
+            $name = htmlspecialchars(trim($_POST['signup_name']));
+            $email = filter_var(trim($_POST['signup_email']), FILTER_SANITIZE_EMAIL);
+            $prog = htmlspecialchars(trim($_POST['signup_program']));
             $password = trim($_POST['signup_password']);
             
             if (strlen($password) < 6) {
@@ -15,9 +19,10 @@
             } else {
                 $password = password_hash($password, PASSWORD_DEFAULT);
                 try {
-                    $stmt = $pdo->prepare("INSERT INTO students(fullname,email,program,password) values (?,?,?,?)");
+                    $stmt = $pdo->prepare("INSERT INTO students(fullname, email, program, password) VALUES (?,?,?,?)");
                     $stmt->execute([$name, $email, $prog, $password]);
-                    header("Refresh:0;url=login.php");
+                    header("Refresh:0; url=login.php");
+                    exit;
                 } catch (PDOException $e) { 
                     $error = "Email already registered"; 
                 }
@@ -30,6 +35,7 @@
 <head>
     <title>Register - NamasteVidyalaya</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/signup.css">
+    <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token']; ?>">
 </head>
 <body>
     <section class="login-page">
@@ -38,11 +44,13 @@
             <article class="login-place">
                 <h3>Student Registration</h3>
                 <form class="login-form" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    
                     <label>Full Name</label>
                     <input type="text" name="signup_name" required placeholder="Full Name">
                     
                     <label>Email</label>
-                    <input type="Email" name="signup_email" required placeholder="student@gmail.com">
+                    <input type="email" name="signup_email" required placeholder="student@gmail.com">
                     
                     <label>Program / Class</label>
                     <select name="signup_program" required>
@@ -55,7 +63,7 @@
                     <input type="password" name="signup_password" minlength="6" required placeholder="••••••••">
                     <p class="password-hint">Password must be at least 6 characters long</p>
                     
-                    <p class="error-message"><?php echo $error ?></p>
+                    <p class="error-message"><?php echo htmlspecialchars($error) ?></p>
                     
                     <input type="submit" value="Register" class="login-submit" name="signup_button">
                 </form>

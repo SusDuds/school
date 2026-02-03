@@ -1,10 +1,10 @@
 <header class="header-section">
     <div class="user-info">
         <div class="user-image">
-            <?php echo strtoupper(substr($_SESSION['name'], 0, 1)); ?>
+            <?php echo strtoupper(substr($_SESSION['name'] ?? 'U', 0, 1)); ?>
         </div>
         <p class="user-name">
-            <?php echo htmlspecialchars($_SESSION['name']) ?>
+            <?php echo htmlspecialchars($_SESSION['name'] ?? 'User') ?>
             <br>
             <span><?php echo date("Y-m-d")?></span>
         </p>

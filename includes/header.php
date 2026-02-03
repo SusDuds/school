@@ -2,7 +2,7 @@
     <div class="user-info">
         <div class="user-image">A</div>
         <p class="user-name">
-            <?php echo htmlspecialchars($_SESSION['name']) ?>
+            <?php echo htmlspecialchars($_SESSION['name'] ?? 'Admin') ?>
             <br>
             <span><?php echo date("Y-m-d")?></span>
         </p>

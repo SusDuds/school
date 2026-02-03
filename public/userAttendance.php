@@ -1,8 +1,14 @@
 <?php
     include "../config/session.php";
     include "../config/db.php";
-    $id = $_SESSION['studentId'];
-    $stmt = $pdo->query("SELECT * from attendance where studentId=$id ORDER BY attendance_date DESC");
+    $id = $_SESSION['studentId'] ?? 0;
+    if ($_SESSION['role'] != 'student') {
+        header("location:login.php");
+        exit;
+    }
+    
+    $stmt = $pdo->prepare("SELECT * FROM attendance WHERE studentId = ? ORDER BY attendance_date DESC");
+    $stmt->execute([$id]);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -24,10 +30,15 @@
                 </tr>
                 <?php foreach ($result as $row) { ?>
                     <tr>
-                        <td><?php echo $row['attendance_date'] ?></td>
+                        <td><?php echo htmlspecialchars($row['attendance_date']) ?></td>
                         <td>Present</td>
                     </tr>
                 <?php } ?>
+                <?php if (count($result) === 0): ?>
+                    <tr>
+                        <td colspan="2" style="text-align:center;padding:40px;">No attendance records found</td>
+                    </tr>
+                <?php endif; ?>
             </table>    
         </main>
     </section>

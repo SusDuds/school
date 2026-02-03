@@ -1,8 +1,13 @@
 <?php
     include "../config/session.php";
     include "../config/db.php";
-    $id = $_SESSION['studentId'];
-    $stmt = $pdo->prepare("SELECT * FROM students WHERE studentId=?");
+    $id = $_SESSION['studentId'] ?? 0;
+    if ($_SESSION['role'] != 'student') {
+        header("location:login.php");
+        exit;
+    }
+    
+    $stmt = $pdo->prepare("SELECT * FROM students WHERE studentId = ?");
     $stmt->execute([$id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
@@ -20,9 +25,9 @@
         <main class="main-right">
             <p class="home-welcome">My Profile</p>
             <div class="user-details">
-                <h3><?php echo $user['fullname']; ?></h3>
-                <p>Email: <?php echo $user['email']; ?></p>
-                <p>Program: <?php echo $user['program']; ?></p>
+                <h3><?php echo htmlspecialchars($user['fullname'] ?? ''); ?></h3>
+                <p>Email: <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
+                <p>Program: <?php echo htmlspecialchars($user['program'] ?? ''); ?></p>
             </div>
         </main>
     </section>

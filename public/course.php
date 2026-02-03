@@ -2,6 +2,7 @@
     include "../config/session.php";
     if ($_SESSION['role'] != 'admin') {
         header("location:login.php");
+        exit;
     }
 ?>
 <!DOCTYPE html>
@@ -11,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/home.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/header.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/course.css">
+    <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token']; ?>">
 </head>
 <body>
     <section class="dashboard">
@@ -20,7 +22,12 @@
             <article class="leave-table">
                 <table class="table" id="course_table">
                     <tr>
-                        <th>Student</th><th>Course</th><th>Date</th><th>Grade</th><th>Status</th><th>Action</th>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Date</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </table>            
             </article>

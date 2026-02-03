@@ -40,7 +40,7 @@
     background: #fff;
 }
 
-.search-btn, .clear-btn {
+.search-btn, .clear-btn, .add-btn {
     padding: 14px 24px;
     border: none;
     border-radius: 10px;
@@ -49,6 +49,15 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     cursor: pointer;
+}
+
+.add-btn {
+    background: #059669;
+    color: #fff;
+}
+
+.add-btn:hover {
+    background: #047857;
 }
 
 .search-btn {
@@ -169,13 +178,13 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
-#editForm {
+#editForm, #addForm {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-#editForm label {
+#editForm label, #addForm label {
     font-size: 11px;
     font-weight: 600;
     color: #333;
@@ -183,8 +192,8 @@
     letter-spacing: 0.5px;
 }
 
-#editForm input,
-#editForm select {
+#editForm input, #editForm select,
+#addForm input, #addForm select {
     padding: 14px 16px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
@@ -192,8 +201,8 @@
     background: #fafafa;
 }
 
-#editForm input:focus,
-#editForm select:focus {
+#editForm input:focus, #editForm select:focus,
+#addForm input:focus, #addForm select:focus {
     outline: none;
     border-color: #2563eb;
     background: #fff;
